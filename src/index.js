@@ -18,6 +18,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import Login from "paginas/Login/Login.js";
 
 // core components
 import Admin from "layouts/Admin.js";
@@ -29,8 +30,8 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" component={Admin} />
-      <Route path="/rtl" component={RTL} />
-      <Redirect from="/" to="/admin/dashboard" />
+      <Route path="/login" component={Login} />
+      <Redirect from="/" to="/admin/estatisticas" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

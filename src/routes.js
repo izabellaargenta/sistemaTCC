@@ -2,10 +2,11 @@ import IconeEstatisticas from "@material-ui/icons/Dashboard";
 import IconeUsuarios from "@material-ui/icons/Person";
 import IconeProdutos from "@material-ui/icons/LibraryBooks";
 // core components/views for Admin layout
-import Estatisticas from "views/Estatisticas/Estatisticas.js";
-import Produtos from "views/Produtos/Produtos.js";
-import Vendas from "views/Vendas/Vendas.js";
-import Usuarios from "views/Usuarios/Usuarios.js";
+import Login from "paginas/Login/Login.js";
+import Estatisticas from "paginas/Estatisticas/Estatisticas.js";
+import Produtos from "paginas/Produtos/Produtos.js";
+import Vendas from "paginas/Vendas/Vendas.js";
+import Usuarios from "paginas/Usuarios/Usuarios.js";
 
 const dashboardRoutes = [
   {
