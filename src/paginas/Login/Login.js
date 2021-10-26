@@ -1,10 +1,8 @@
 import React, { Component, useState} from 'react';
 import './login.css';
 import {useHistory} from 'react-router-dom';
-//import firebase from '../../config/firebase'
-
-
-
+import firebase, { auth } from '../../config/firebaseService';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login(){
     const [email, setEmail] = useState("");
@@ -13,16 +11,15 @@ function Login(){
     const history = useHistory();
 
     function logar (){
-        if(email === "izabella@gmail.com" && senha === "izabella123"){
-            
-            history.push("/home");
-        }else {
 
-            alert ('Email ou Senha incorretos'); 
-        }
+        signInWithEmailAndPassword(auth, email, senha).then(resultado => {
+            alert('USUARIO LOGADO!');
+        }).catch(erro => {
+            alert(erro);
+        });
 
-       
     }
+      
     return(
         <div className="login-content d-flex align-items-center">
                 <form className="form-signin mx-auto">

@@ -96,7 +96,7 @@ export default function UserProfile() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Registrar Produto</Button>
+              <Button color="primary" disabled={false}>Registrar Produto</Button>{/* Botão */}
             </CardFooter>
           </Card>
         </GridItem>
