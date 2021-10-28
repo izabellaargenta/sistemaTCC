@@ -19,16 +19,24 @@ const db = getFirestore();
 
 export const auth = getAuth();
 
-export async function lerProdutos() {
-  const querySnapshot = await getDocs(collection(db, "produtos"));
-  const produtos = [];
+async function lerColecao(colecao) {
+  const querySnapshot = await getDocs(collection(db, colecao));
+  const items = [];
   querySnapshot.forEach((doc) => {
-    const produto = doc.data();
-    produto.id = doc.id;
-    produtos.push(produto);
+    const item = doc.data();
+    item.id = doc.id;
+    items.push(item);
   });
   
-  return produtos;
+  return items;
+}
+
+export async function lerProdutos() {  
+  return await lerColecao("produtos");
+}
+
+export async function lerVendas() {  
+  return await lerColecao("vendas");
 }
 
 export async function criarProduto(produto) {

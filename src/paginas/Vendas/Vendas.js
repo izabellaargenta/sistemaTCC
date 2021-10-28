@@ -41,11 +41,37 @@ const styles = {
     },
   },
 };
-
 const useStyles = makeStyles(styles);
 
-export default function TableList() {
+export default function Vendas() {
   const classes = useStyles();
+
+  function carregarVendas() {
+    lerProdutos().then(vendas => {
+      console.log('vendas', vendas)
+    });
+  }
+
+  function salvarVenda() {
+    const venda = {
+      nome: 'Corrente',
+      preço: 5.99,
+      quantidade: 10,
+      descricao: 'descrição de exemplo',
+    };
+
+    criarProduto(venda).then(
+      // Sucesso
+      novoVenda => {
+        console.log('nova venda', novaVenda);
+      },
+      // Erro
+      mensagemDeErro => {
+        alert(mensagemDeErro);
+      },
+    );
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={6}>

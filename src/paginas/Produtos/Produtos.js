@@ -48,7 +48,7 @@ export default function Produtos() {
       nome: 'Corrente',
       preço: 5.99,
       quantidade: 10,
-      descricao: '',
+      descricao: 'descrição de exemplo',
     };
 
     criarProduto(produto).then(
@@ -124,7 +124,7 @@ export default function Produtos() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button onClick={salvarProduto} color="primary" disabled={false}>Registrar Produto</Button>{/* Botão */}
+              <Button onClick={carregarProdutos} color="primary" disabled={false}>Registrar Produto</Button>{/* Botão */}
             </CardFooter>
           </Card>
         </GridItem>
