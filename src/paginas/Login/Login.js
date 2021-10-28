@@ -7,15 +7,18 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 function Login(){
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [msgTipo, setMsgTipo] = useState("");
+
+
     const disabilitarLogin = email.length === 0 || senha.length === 0;
     const history = useHistory();
 
     function logar (){
 
         signInWithEmailAndPassword(auth, email, senha).then(resultado => {
-            alert('USUARIO LOGADO!');
+            setMsgTipo('sucesso');
         }).catch(erro => {
-            alert(erro);
+            setMsgTipo('erro');
         });
 
     }
@@ -36,8 +39,10 @@ function Login(){
                 <button onClick={logar} class="btn btn-lg btn-block btn-login" type="button" disabled={disabilitarLogin}>Logar</button>
 
                 <div className="msg-login text-white text-center my-5">
-                    <span>Você está conectado!</span>
-                    <span>Verifique se a senha ou usuário estão corretos!</span>
+                    {msgTipo === 'sucesso'&& <span>Você está conectado!</span>}
+                     {msgTipo === 'erro' &&<span>Verifique se a senha ou usuário estão corretos!</span>}
+                    
+                   
                 </div>
 
                 <div className="opcoes-login mt-5">

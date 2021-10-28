@@ -11,6 +11,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import { lerProdutos, criarProduto } from "config/firebaseService";
 
 const styles = {
   cardCategoryWhite: {
@@ -33,8 +34,35 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function UserProfile() {
+export default function Produtos() {
   const classes = useStyles();
+
+  function carregarProdutos() {
+    lerProdutos().then(produtos => {
+      console.log('produtos', produtos)
+    });
+  }
+
+  function salvarProduto() {
+    const produto = {
+      nome: 'Corrente',
+      preço: 5.99,
+      quantidade: 10,
+      descricao: '',
+    };
+
+    criarProduto(produto).then(
+      // Sucesso
+      novoProduto => {
+        console.log('novo produto', novoProduto);
+      },
+      // Erro
+      mensagemDeErro => {
+        alert(mensagemDeErro);
+      },
+    );
+  }
+
   return (
     <div>
       <GridContainer>
@@ -96,7 +124,7 @@ export default function UserProfile() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary" disabled={false}>Registrar Produto</Button>{/* Botão */}
+              <Button onClick={salvarProduto} color="primary" disabled={false}>Registrar Produto</Button>{/* Botão */}
             </CardFooter>
           </Card>
         </GridItem>

@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
+import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore"
 
 const firebaseConfig = {
   apiKey: "AIzaSyBb611jvV596ukKGiMlIguinoRZ0gmHz9M",
@@ -14,4 +15,51 @@ const firebaseConfig = {
 // Initialize Firebase
 export default initializeApp(firebaseConfig);
 
+const db = getFirestore();
+
 export const auth = getAuth();
+
+export async function lerProdutos() {
+  const querySnapshot = await getDocs(collection(db, "produtos"));
+  const produtos = [];
+  querySnapshot.forEach((doc) => {
+    const produto = doc.data();
+    produto.id = doc.id;
+    produtos.push(produto);
+  });
+  
+  return produtos;
+}
+
+export async function criarProduto(produto) {
+  if (!produto.hasOwnProperty('nome')) {
+    throw new Error('O nome do produto deve ser fornecido nome');
+  }
+
+  if (!produto.hasOwnProperty('preço')) {
+    throw new Error('O preço do produto deve ser fornecido');
+  }
+
+  if (!produto.hasOwnProperty('quantidade')) {
+    throw new Error('O quantidade do produto deve ser fornecida');
+  }
+
+  try {
+    const docRef = await addDoc(collection(db, "produtos"), {
+      nome: produto.nome,
+      preço: produto.preço,
+      quantidade: produto.quantidade,
+      descricao: produto.descricao || '',
+    });
+    alert("Produto criado com ID: ", docRef.id);
+
+    const novoProduto = docRef.data();
+    novoProduto.id = docRef.id;
+    return novoProduto;
+  } catch (e) {
+    console.error(e);
+    throw new Error('Não foi possível salvar o produto');
+  }
+  
+  return produtos;
+}

@@ -67,6 +67,16 @@ export default function TableList() {
                     disabled: false,
                   }}
                 />
+                <CustomInput
+                  labelText="Forma de Pagamento"
+                  id="formaPagamento"
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                  inputProps={{
+                    disabled: false,
+                  }}
+                />
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
                 <CustomInput
