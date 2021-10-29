@@ -68,8 +68,8 @@ export default function CustomInput(props) {
           underline: underlineClasses,
         }}
         id={id}
-        {...inputProps}
         inputProps={newInputProps}
+        {...inputProps}
       />
       {error ? (
         <Clear className={classes.feedback + " " + classes.labelRootError} />

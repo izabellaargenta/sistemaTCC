@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore"
+import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBb611jvV596ukKGiMlIguinoRZ0gmHz9M",
@@ -8,9 +8,8 @@ const firebaseConfig = {
   projectId: "agrocomercialargenta-a5ac0",
   storageBucket: "agrocomercialargenta-a5ac0.appspot.com",
   messagingSenderId: "771871509299",
-  appId: "1:771871509299:web:fdee7532bd693fbb344c46"
+  appId: "1:771871509299:web:fdee7532bd693fbb344c46",
 };
-
 
 // Initialize Firebase
 export default initializeApp(firebaseConfig);
@@ -27,47 +26,48 @@ async function lerColecao(colecao) {
     item.id = doc.id;
     items.push(item);
   });
-  
+  console.log("items from ler coleção", items);
   return items;
 }
 
-export async function lerProdutos() {  
+export async function lerProdutos() {
   return await lerColecao("produtos");
 }
 
-export async function lerVendas() {  
+export async function lerVendas() {
   return await lerColecao("vendas");
 }
 
 export async function criarProduto(produto) {
-  if (!produto.hasOwnProperty('nome')) {
-    throw new Error('O nome do produto deve ser fornecido nome');
+  if (!produto.hasOwnProperty("nome")) {
+    throw new Error("O nome do produto deve ser fornecido nome");
   }
 
-  if (!produto.hasOwnProperty('preço')) {
-    throw new Error('O preço do produto deve ser fornecido');
+  if (!produto.hasOwnProperty("preço")) {
+    throw new Error("O preço do produto deve ser fornecido");
   }
 
-  if (!produto.hasOwnProperty('quantidade')) {
-    throw new Error('O quantidade do produto deve ser fornecida');
+  if (!produto.hasOwnProperty("quantidade")) {
+    throw new Error("O quantidade do produto deve ser fornecida");
   }
 
   try {
-    const docRef = await addDoc(collection(db, "produtos"), {
+    const novoProduto = {
       nome: produto.nome,
       preço: produto.preço,
       quantidade: produto.quantidade,
-      descricao: produto.descricao || '',
-    });
-    alert("Produto criado com ID: ", docRef.id);
+      descricao: produto.descricao || "",
+    };
+    const docRef = await addDoc(collection(db, "produtos"), novoProduto);
 
-    const novoProduto = docRef.data();
+
+    alert(`Produto criado com ID: ${docRef.id}`);
+
     novoProduto.id = docRef.id;
+
     return novoProduto;
   } catch (e) {
     console.error(e);
-    throw new Error('Não foi possível salvar o produto');
+    throw new Error("Não foi possível salvar o produto");
   }
-  
-  return produtos;
 }

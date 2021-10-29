@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -35,33 +35,47 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function Produtos() {
+  const [produtos, setProdutos] = useState([]);
+
+  const [nome, setNome] = useState("");
+  const [preco, setPreco] = useState("");
+  const [quantidade, setQuantidade] = useState("")
+  const [descricao, setDescricao] = useState("");
+
+
   const classes = useStyles();
 
   function carregarProdutos() {
     lerProdutos().then(produtos => {
-      console.log('produtos', produtos)
+     const produtosMapeados = produtos.map(produto => ([
+      String(produto.nome),
+      "25/01/2970",
+      String(produto.quantidade),
+      String(produto.valor) || String(produto["preço"])
+     ]))
+
+     setProdutos([...produtosMapeados]);
     });
+
   }
 
-  function salvarProduto() {
+  async function salvarProduto() {
     const produto = {
-      nome: 'Corrente',
-      preço: 5.99,
-      quantidade: 10,
-      descricao: 'descrição de exemplo',
+      nome,
+      "preço": preco,
+      quantidade,
+      descricao,
     };
 
-    criarProduto(produto).then(
-      // Sucesso
-      novoProduto => {
-        console.log('novo produto', novoProduto);
-      },
-      // Erro
-      mensagemDeErro => {
-        alert(mensagemDeErro);
-      },
-    );
+    const novoProduto = await  criarProduto(produto);
+    console.log(novoProduto)
+    setProdutos((produtos) => [...produtos, [novoProduto.nome, "", novoProduto.quantidade, novoProduto["preço"]]])
+
   }
+
+  useEffect(() => {
+    carregarProdutos();
+  }, [])
 
   return (
     <div>
@@ -85,6 +99,10 @@ export default function Produtos() {
                     }}
                     inputProps={{
                       disabled: false,
+                      value: nome,
+                      onChange: (event) => {
+                        setNome(event.target.value);
+                      },
                     }}
                   />
                 </GridItem>
@@ -95,6 +113,13 @@ export default function Produtos() {
                     formControlProps={{
                       fullWidth: true,
                     }}
+                    inputProps={{
+                      disabled: false,
+                      value: preco,
+                      onChange: (event) => {
+                        setPreco(event.target.value);
+                      },
+                    }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -103,6 +128,12 @@ export default function Produtos() {
                     id="email-address"
                     formControlProps={{
                       fullWidth: true,
+                    }}
+                    inputProps={{
+                      value: quantidade,
+                      onChange: (event) => {
+                        setQuantidade(event.target.value);
+                      },
                     }}
                   />
                 </GridItem>
@@ -118,38 +149,42 @@ export default function Produtos() {
                     inputProps={{
                       multiline: true,
                       rows: 5,
+                      value: descricao,
+                      onChange: (event) => {
+                        setDescricao(event.target.value);
+                      },
                     }}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button onClick={carregarProdutos} color="primary" disabled={false}>Registrar Produto</Button>{/* Botão */}
+              <Button
+                onClick={() => salvarProduto()}
+                color="primary"
+                disabled={false}
+              >
+                Registrar Produto
+              </Button>
+              {/* Botão */}
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={6}>
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Estoque</h4>
-            <p className={classes.cardCategoryWhite}>Produtos em estoque</p>
-          </CardHeader>
-          <CardBody>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={["Produto", "Data de Entrada", "Estoque", "Preço"]}
-              tableData={[
-                ["Mudas Alface", "07/10/21", "50 u", "R$15,00"],
-                ["Ração Supra Gatos", "07/10/21", "1kg", "R$10,00"],
-                ["Corrente", "07/10/21", "10kg", "R$56,142"],
-                ["Corda fina", "07/10/21", "40m", "R$38,735"],
-                ["Ração Postura Concentrada", "07/10/21", "1pct", "R$20,00"],
-                ["Ração Farroupilha Cavalos", "07/10/21", "50 sacos", "R$78,615"],
-              ]}
-            />
-          </CardBody>
-        </Card>
-      </GridItem>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>Estoque</h4>
+              <p className={classes.cardCategoryWhite}>Produtos em estoque</p>
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="primary"
+                tableHead={["Produto", "Data de Entrada", "Estoque", "Preço"]}
+                tableData={produtos}
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
       </GridContainer>
     </div>
   );
